@@ -25,34 +25,42 @@
     </properties>
 
     <dependencies>
+        <!--必引，沒引用這個就什麼都不用玩了-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <!--必引，沒引用這個也什麼都不用玩了，我們的主角-->
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>LATEST</version>
         </dependency>
-
+        <!--懶人必備，可以省去大量的get/set-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
+        <!--json 的常用包很多，這邊隨便拿這個擋一下-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
         </dependency>
-
+        <!--這次的高可用客戶端，配置必須，因爲這個卡超久-->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>LATEST</version>
         </dependency>
+        <!--sping boot 升級後會自動包裝，如果不拿掉，tomcat會起不來，巨坑-->
+        <!-- <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.6</version>
+        </dependency> -->
 
+        <!--測試用，留着無妨，不然還要寫掠過測試，麻煩哪-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
