@@ -3,7 +3,7 @@ package com.ithelp.ironman.ecdemo.bean.es;
 import lombok.Data;
 
 @Data
-public class Profile {
+public class UserInfo {
     private String id;
     private String name;
     private String six;
