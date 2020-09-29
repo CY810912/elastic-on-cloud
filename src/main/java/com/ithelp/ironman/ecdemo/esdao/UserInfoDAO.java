@@ -8,6 +8,8 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -44,6 +46,17 @@ public class UserInfoDAO {
         return getSearchResult(client.search(searchRequest, RequestOptions.DEFAULT));
     }
 
+    public List<UserInfo> findByName(String field, String value) throws IOException {
+        //來建立個搜尋請求，並告訴他我們要找ES哪個 INDEX
+        SearchRequest searchRequest = new SearchRequest(INDEX);
+        //建立ES 的資源搜尋類，搜尋起手式
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        //開始拼接ES的搜尋語句，語句爲field match(等於) value
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders
+                .matchQuery(field, value);
+        searchRequest.source(searchSourceBuilder.query(matchQueryBuilder));
+        return getSearchResult(client.search(searchRequest, RequestOptions.DEFAULT));
+    }
 
 
     private Map<String, Object> convertUserInfoToMap(UserInfo userInfo) {
@@ -64,5 +77,6 @@ public class UserInfoDAO {
         }
         return userInfoList;
     }
+
 
 }

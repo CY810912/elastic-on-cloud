@@ -2,13 +2,9 @@ package com.ithelp.ironman.ecdemo.controller;
 
 import com.ithelp.ironman.ecdemo.bean.es.UserInfo;
 import com.ithelp.ironman.ecdemo.service.UserInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,5 +22,10 @@ public class UserInfoController {
     @GetMapping
     public List<UserInfo> findAll() throws Exception {
         return userInfoService.findAll();
+    }
+
+    @GetMapping(value = "/search/{field}/{value}")
+    public List<UserInfo> searchByField(@PathVariable String field, @PathVariable String value) throws Exception {
+        return userInfoService.findUserInfoByField(field,value);
     }
 }

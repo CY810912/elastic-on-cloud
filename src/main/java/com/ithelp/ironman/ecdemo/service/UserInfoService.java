@@ -37,5 +37,7 @@ public class UserInfoService {
         return userInfoDAO.findAll();
     }
 
-
+    public List<UserInfo> findUserInfoByField(String field, String name) throws IOException {
+        return userInfoDAO.findByName(field,name);
+    }
 }
