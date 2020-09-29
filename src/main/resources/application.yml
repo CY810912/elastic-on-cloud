@@ -1,15 +1,16 @@
 
-elasticsearch:
-  host: localhost
-  port: 9200
-  username:
-  password:
-
-
 #elasticsearch:
-#  host: 3586ff6792224f91ad8d0d99ef387c44.asia-east1.gcp.elastic-cloud.com
-#  port: 9243
-#  username: elastic
-#  password: vOtc8JDpeqxhiGQrfk2NZQJI
+#  host: localhost
+#  port: 9200
+#  username:
+#  password:
+
+
+elasticsearch:
+  host: 3586ff6792224f91ad8d0d99ef387c44.asia-east1.gcp.elastic-cloud.com
+  port: 9243
+  username: elastic
+  password: vOtc8JDpeqxhiGQrfk2NZQJI
+
 server:
   port: 8081
