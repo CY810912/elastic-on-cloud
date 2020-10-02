@@ -2,21 +2,25 @@ package com.ithelp.ironman.ecdemo.esdao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ithelp.ironman.ecdemo.bean.es.UserInfo;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,15 @@ public class UserInfoDAO {
         indexRequest.id(userInfo.getId());
         indexRequest.source(convertUserInfoToMap(userInfo));
         return client.index(indexRequest, RequestOptions.DEFAULT);
+    }
+
+    public String updateDoc(UserInfo userInfo) throws IOException {
+        UpdateRequest updateRequest = new UpdateRequest(
+                INDEX,
+                userInfo.getId());
+        updateRequest.doc(convertUserInfoToMap(userInfo));
+        UpdateResponse updateResponse = client.update(updateRequest, RequestOptions.DEFAULT);
+        return updateResponse.getResult().name();
     }
 
     public List<UserInfo> findAll() throws IOException {
@@ -58,9 +71,19 @@ public class UserInfoDAO {
         return getSearchResult(client.search(searchRequest, RequestOptions.DEFAULT));
     }
 
+    public UserInfo findById(String id) throws IOException {
+        GetRequest getRequest = new GetRequest(INDEX, id);
+        GetResponse getResponse = client.get(getRequest, RequestOptions.DEFAULT);
+        Map<String, Object> resultMap = getResponse.getSource();
+        return convertMapToUserInfo(resultMap);
+    }
 
     private Map<String, Object> convertUserInfoToMap(UserInfo userInfo) {
         return objectMapper.convertValue(userInfo, Map.class);
+    }
+
+    private UserInfo convertMapToUserInfo(Map<String, Object> map) {
+        return objectMapper.convertValue(map, UserInfo.class);
     }
 
     private SearchRequest buildSearchRequest(String index) {
@@ -78,5 +101,8 @@ public class UserInfoDAO {
         return userInfoList;
     }
 
-
+    public String deleteDoc(String id) throws IOException {
+        DeleteRequest deleteRequest = new DeleteRequest(INDEX, id);
+        return client.delete(deleteRequest, RequestOptions.DEFAULT).getResult().name();
+    }
 }
